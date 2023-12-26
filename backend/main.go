@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	websocket "github.com/pranayjoshi/reagle/pkg/WebSocket"
+	websocket "github.com/pranayjoshi/reagle/pkg/chat"
+	"github.com/pranayjoshi/reagle/pkg/video_chat"
 )
 
 func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request, user string) {
@@ -63,10 +64,15 @@ func setupRoutes() {
 			return
 		}
 	})
+	video_chat.AllRooms.Init()
+
+	http.HandleFunc("/create", video_chat.CreateRoomRequestHandler)
+	http.HandleFunc("/join", video_chat.JoinRoomRequestHandler)
 }
 
 func main() {
 	fmt.Println("Server running on port 9000")
 	setupRoutes()
+
 	http.ListenAndServe(":9000", nil)
 }
