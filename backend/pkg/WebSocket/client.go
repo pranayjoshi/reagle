@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"sync"
 
 	"github.com/gorilla/websocket"
 )
@@ -14,7 +13,6 @@ type Client struct {
 	Conn *websocket.Conn
 	Pool *Pool
 	User string
-	mu   sync.Mutex
 }
 
 type Message struct {
