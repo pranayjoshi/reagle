@@ -5,6 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { connect, sendMsg, initializeSocket } from "../api";
+import { useNavigate } from "react-router-dom";
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
@@ -29,6 +30,15 @@ export default function Chat() {
       console.log(messages);
     });
   }, []); // Add this line
+  const navigate = useNavigate();
+    const create = async (e) => {
+        e.preventDefault();
+
+        const resp = await fetch("http://localhost:8000/create");
+        const { room_id } = await resp.json();
+
+		navigate(`/room/${room_id}`)
+    };
   const [message, setMessage] = useState("");
   function returnMessage(message, index) {
     return message[index];
