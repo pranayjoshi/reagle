@@ -39,7 +39,7 @@ const Room = (props) => {
             userStream.current = stream;
 
             webSocketRef.current = new WebSocket(
-                `ws://localhost:8000/join?roomID=${props.match.params.roomID}`
+                `ws://localhost:9000/join?roomID=${props.match.params.roomID}`
             );
 
             webSocketRef.current.addEventListener("open", () => {

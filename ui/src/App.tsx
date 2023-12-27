@@ -1,8 +1,9 @@
 import './App.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import Chat from './layout/chat'
+// import Chat from './layout/chat'
 import Username from './layout/username'
 import Room from './components/Room';
+import MainPage from './layout/main_page';
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Username />} />
-          <Route path="/room" element={<Chat />} />
+          <Route path="/room" element={<MainPage />} />
           <Route path="/room/:roomID" element={<Room/>}></Route>
         </Routes>
       </BrowserRouter>

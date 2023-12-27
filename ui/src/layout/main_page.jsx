@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 import { connect, sendMsg, initializeSocket } from "../api";
 import { useNavigate } from "react-router-dom";
 import CreateRoom from "../components/CreateRoom";
+import Chat from './chat'
 
-export default function Chat() {
+export default function MainPage() {
   const [messages, setMessages] = useState([]);
   const [updates, setUpdates] = useState([]);
   const [users, setUsers] = useState([]);
@@ -48,15 +49,9 @@ export default function Chat() {
             <h2 className="text-2xl font-bold mb-2 text-indigo-700">Chat</h2>
             <CreateRoom />
             </div>
-            <div
-              dir="ltr"
-              className="relative overflow-hidden h-96 mb-4 bg-gray-200 p-4 rounded-md overflow-y-auto"
-              // ="position: relative; --radix-scroll-area-corner-width: 0px; --radix-scroll-area-corner-height: 0px;"
-            >
-              <style></style>
               <Chat messages={messages} />
             </div>
-          </div>
+          
           <div className="space-y-4">
             <div
               className="rounded-lg border bg-card text-card-foreground shadow-lg"

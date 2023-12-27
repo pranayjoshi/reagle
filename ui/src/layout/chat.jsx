@@ -18,7 +18,7 @@ export default function Chat({messages}) {
     setMessage("");
   }
   return (
-    <div>
+    <div className="bg-white">
       <div
         dir="ltr"
         className="relative overflow-hidden h-96 mb-4 bg-gray-200 p-4 rounded-md overflow-y-auto"
