@@ -30,15 +30,6 @@ export default function Chat() {
       console.log(messages);
     });
   }, []); // Add this line
-  const navigate = useNavigate();
-    const create = async (e) => {
-        e.preventDefault();
-
-        const resp = await fetch("http://localhost:8000/create");
-        const { room_id } = await resp.json();
-
-		navigate(`/room/${room_id}`)
-    };
   const [message, setMessage] = useState("");
   function returnMessage(message, index) {
     return message[index];
