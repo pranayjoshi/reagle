@@ -6,6 +6,7 @@
 import { useEffect, useState } from "react";
 import { connect, sendMsg, initializeSocket } from "../api";
 import { useNavigate } from "react-router-dom";
+import CreateRoom from "../components/CreateRoom";
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
@@ -45,7 +46,7 @@ export default function Chat() {
           <div className="col-span-2 bg-white rounded-lg shadow-lg p-6">
             <div className="flex">
             <h2 className="text-2xl font-bold mb-2 text-indigo-700">Chat</h2>
-            <button className="mx-6 mb-4 items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white">Video Chat</button>
+            <CreateRoom />
             </div>
             <div
               dir="ltr"
