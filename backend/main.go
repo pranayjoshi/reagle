@@ -64,6 +64,7 @@ func setupRoutes() {
 			return
 		}
 	})
+
 	video_chat.AllRooms.Init()
 
 	http.HandleFunc("/create", video_chat.CreateRoomRequestHandler)
