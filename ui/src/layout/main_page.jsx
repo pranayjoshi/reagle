@@ -51,7 +51,7 @@ export default function MainPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="col-span-2 bg-white rounded-lg shadow-lg p-6">
             <div className="flex">
-            <a className="text-2xl font-bold mb-2 text-indigo-700" onClick={setRoomId("")}>Chat</a>
+            <a className="text-2xl font-bold mb-2 text-indigo-700" onClick={() => setRoomId("")}>Chat</a>
             <CreateRoom handleRoomIdChange={handleRoomIdChange} />
             </div>
               {room_id != "" ? <Room roomId={room_id}/>: <Chat messages={messages} /> } 
