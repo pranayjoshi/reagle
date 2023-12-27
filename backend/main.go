@@ -7,20 +7,20 @@ import (
 	"net/http"
 	"strings"
 
-	websocket "github.com/pranayjoshi/reagle/pkg/chat"
+	chat "github.com/pranayjoshi/reagle/pkg/chat"
 	"github.com/pranayjoshi/reagle/pkg/video_chat"
 )
 
-func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request, user string) {
-	fmt.Println("websocket endpoint reached")
+func serveWS(pool *chat.Pool, w http.ResponseWriter, r *http.Request, user string) {
+	fmt.Println("chat endpoint reached")
 
-	conn, err := websocket.Upgrade(w, r)
+	conn, err := chat.Upgrade(w, r)
 
 	if err != nil {
 		fmt.Fprintf(w, "%+v\n", err)
 	}
 	fmt.Println("Connection Established:   awawdwawd: ", user)
-	client := &websocket.Client{
+	client := &chat.Client{
 		Conn: conn,
 		Pool: pool,
 		User: user,
@@ -53,7 +53,7 @@ func setupRoutes() {
 
 	})
 
-	pool := websocket.NewPool()
+	pool := chat.NewPool()
 	go pool.Start()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("User: ", user.Username)
