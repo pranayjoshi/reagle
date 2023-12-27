@@ -45,6 +45,11 @@ export default function MainPage() {
   function handleRoomIdChange(val) {
     setRoomId(val);
   }
+  function closeCamera() {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+  }
   return (
     <div className=" w-full">
       <main className="container mx-auto p-6 bg-gray-100">
