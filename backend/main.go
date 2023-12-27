@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -75,5 +76,8 @@ func main() {
 	fmt.Println("Server running on port 9000")
 	setupRoutes()
 
-	http.ListenAndServe(":9000", nil)
+	err := http.ListenAndServe(":9000", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
