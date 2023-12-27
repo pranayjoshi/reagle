@@ -40,6 +40,10 @@ export default function MainPage() {
     sendMsg(message);
     setMessage("");
   }
+  const [room_id, setRoomId] = useState("");
+  function handleRoomIdChange(e) {
+    setRoomId(e.target.value);
+  }
   return (
     <div className=" w-full">
       <main className="container mx-auto p-6 bg-gray-100">
@@ -47,8 +51,9 @@ export default function MainPage() {
           <div className="col-span-2 bg-white rounded-lg shadow-lg p-6">
             <div className="flex">
             <h2 className="text-2xl font-bold mb-2 text-indigo-700">Chat</h2>
-            <CreateRoom />
+            <CreateRoom handleRoomIdChange />
             </div>
+
               <Chat messages={messages} />
             </div>
           

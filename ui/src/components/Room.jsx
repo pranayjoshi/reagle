@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const Room = (props) => {
+const Room = ({roomId}) => {
     const userVideo = useRef();
     const userStream = useRef();
     const partnerVideo = useRef();
@@ -39,7 +39,7 @@ const Room = (props) => {
             userStream.current = stream;
 
             webSocketRef.current = new WebSocket(
-                `ws://localhost:9000/join?roomID=${props.match.params.roomID}`
+                `ws://localhost:9000/join?roomID=${roomId}`
             );
 
             webSocketRef.current.addEventListener("open", () => {
