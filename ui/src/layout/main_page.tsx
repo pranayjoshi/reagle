@@ -54,29 +54,7 @@ export default function Chat() {
               // ="position: relative; --radix-scroll-area-corner-width: 0px; --radix-scroll-area-corner-height: 0px;"
             >
               <style></style>
-              <div
-                className="h-full w-full rounded-[inherit]"
-                //   style="overflow: hidden scroll;"
-              >
-                {messages.map((msg, index) => (
-                  <div key={index} className="flex items-start space-x-4">
-                    <span className="relative flex shrink-0 overflow-hidden w-10 h-10 rounded-full"></span>
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <h3 className="font-bold text-indigo-600">
-                          {returnMessage(msg, "user")}
-                        </h3>
-                        <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-blue-200 text-blue-800">
-                          {Date(msg.timeStamp * 1000)}
-                        </div>
-                      </div>
-                      <p className="text-gray-700">
-                        {returnMessage(msg, "body")}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Chat />
             </div>
             <div className="flex w-full items-center space-x-2">
               <input
