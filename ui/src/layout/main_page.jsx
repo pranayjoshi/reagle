@@ -8,6 +8,7 @@ import { connect, sendMsg, initializeSocket } from "../api";
 import { useNavigate } from "react-router-dom";
 import CreateRoom from "../components/CreateRoom";
 import Chat from './chat'
+import Room from "../components/Room";
 
 export default function MainPage() {
   const [messages, setMessages] = useState([]);
@@ -50,11 +51,10 @@ export default function MainPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="col-span-2 bg-white rounded-lg shadow-lg p-6">
             <div className="flex">
-            <h2 className="text-2xl font-bold mb-2 text-indigo-700">Chat</h2>
+            <a className="text-2xl font-bold mb-2 text-indigo-700" onClick={setRoomId("")}>Chat</a>
             <CreateRoom handleRoomIdChange />
             </div>
-
-              <Chat messages={messages} />
+              {room_id == "" ? <Chat messages={messages} /> : <Room roomId={room_id}/>} 
             </div>
           
           <div className="space-y-4">
