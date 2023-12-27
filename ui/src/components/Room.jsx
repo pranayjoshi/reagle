@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const Room = ({roomId}) => {
     const userVideo = useRef();
@@ -6,6 +6,7 @@ const Room = ({roomId}) => {
     const partnerVideo = useRef();
     const peerRef = useRef();
     const webSocketRef = useRef();
+    const [stream, setStream] = useState(null);
 
     const openCamera = async () => {
         const allDevices = await navigator.mediaDevices.enumerateDevices();
@@ -26,7 +27,9 @@ const Room = ({roomId}) => {
         };
 
         try {
-            return await navigator.mediaDevices.getUserMedia(constraints);
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            setStream(stream);
+            return stream;
         } catch (err) {
             console.log(err);
             alert("Failed to access camera.");
@@ -76,7 +79,13 @@ const Room = ({roomId}) => {
                 }
             });
         });
-    });
+        return () => {
+            // This will run when the component unmounts
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        };
+    }, []);
 
     const handleOffer = async (offer) => {
         console.log("Received Offer, Creating Answer");
