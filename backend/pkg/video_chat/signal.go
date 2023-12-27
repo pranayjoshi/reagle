@@ -12,6 +12,7 @@ import (
 var AllRooms RoomMap
 
 // CreateRoomRequestHandler Create a Room and return roomID
+// CreateRoomRequestHandler will create a room and return the room ID
 func CreateRoomRequestHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	roomID := AllRooms.CreateRoom()
