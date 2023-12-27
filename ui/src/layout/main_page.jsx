@@ -42,8 +42,8 @@ export default function MainPage() {
     setMessage("");
   }
   const [room_id, setRoomId] = useState("");
-  function handleRoomIdChange(e) {
-    setRoomId(e.target.value);
+  function handleRoomIdChange(val) {
+    setRoomId(val);
   }
   return (
     <div className=" w-full">
@@ -52,9 +52,9 @@ export default function MainPage() {
           <div className="col-span-2 bg-white rounded-lg shadow-lg p-6">
             <div className="flex">
             <a className="text-2xl font-bold mb-2 text-indigo-700" onClick={setRoomId("")}>Chat</a>
-            <CreateRoom handleRoomIdChange />
+            <CreateRoom {handleRoomIdChange(val)} />
             </div>
-              {room_id == "" ? <Chat messages={messages} /> : <Room roomId={room_id}/>} 
+              {room_id != "" ? <Room roomId={room_id}/>: <Chat messages={messages} /> } 
             </div>
           
           <div className="space-y-4">
