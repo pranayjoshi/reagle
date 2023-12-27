@@ -1,91 +1,73 @@
 package video_chat
 
 import (
-	"encoding/json"
 	"log"
-	"net/http"
+	"math/rand"
+	"sync"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
 
-// AllRooms is the global hashmap for the server
-var AllRooms RoomMap
-
-// CreateRoomRequestHandler Create a Room and return roomID
-func CreateRoomRequestHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	roomID := AllRooms.CreateRoom()
-
-	type resp struct {
-		RoomID string `json:"room_id"`
-	}
-
-	log.Println(AllRooms.Map)
-	json.NewEncoder(w).Encode(resp{RoomID: roomID})
+// Participant describes a single entity in the hashmap
+type Participant struct {
+	Host bool
+	Conn *websocket.Conn
+}
+type RoomMap struct {
+	Mutex sync.RWMutex
+	Map   map[string][]Participant
 }
 
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
+// RoomMap is the main hashmap [roomID string] -> [[]Participant]
+
+// Init initialises the RoomMap struct
+func (r *RoomMap) Init() {
+	r.Map = make(map[string][]Participant)
 }
 
-type broadcastMsg struct {
-	Message map[string]interface{}
-	RoomID  string
-	Client  *websocket.Conn
+// Get will return the array of participants in the room
+func (r *RoomMap) Get(roomID string) []Participant {
+	r.Mutex.RLock()
+	defer r.Mutex.RUnlock()
+
+	return r.Map[roomID]
 }
 
-var broadcast = make(chan broadcastMsg)
+// CreateRoom generate a unique room ID and return it -> insert it in the hashmap
+func (r *RoomMap) CreateRoom() string {
+	r.Mutex.Lock()
+	defer r.Mutex.Unlock()
 
-func broadcaster() {
-	for {
-		msg := <-broadcast
+	rand.Seed(time.Now().UnixNano())
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+	b := make([]rune, 8)
 
-		for _, client := range AllRooms.Map[msg.RoomID] {
-			if client.Conn != msg.Client {
-				err := client.Conn.WriteJSON(msg.Message)
-
-				if err != nil {
-					log.Fatal(err)
-					client.Conn.Close()
-				}
-			}
-		}
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
 	}
+
+	roomID := string(b)
+	r.Map[roomID] = []Participant{}
+
+	return roomID
 }
 
-// JoinRoomRequestHandler will join the client in a particular room
-func JoinRoomRequestHandler(w http.ResponseWriter, r *http.Request) {
-	roomID, ok := r.URL.Query()["roomID"]
+// InsertIntoRoom will create a participant and add it in the hashmap
+func (r *RoomMap) InsertIntoRoom(roomID string, host bool, conn *websocket.Conn) {
+	r.Mutex.Lock()
+	defer r.Mutex.Unlock()
 
-	if !ok {
-		log.Println("roomID missing in URL Parameters")
-		return
-	}
+	p := Participant{host, conn}
 
-	ws, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Fatal("Web Socket Upgrade Error", err)
-	}
+	log.Println("Inserting into Room with RoomID: ", roomID)
+	r.Map[roomID] = append(r.Map[roomID], p)
+}
 
-	AllRooms.InsertIntoRoom(roomID[0], false, ws)
+// DeleteRoom deletes the room with the roomID
+func (r *RoomMap) DeleteRoom(roomID string) {
+	r.Mutex.Lock()
+	defer r.Mutex.Unlock()
 
-	go broadcaster()
-
-	for {
-		var msg broadcastMsg
-
-		err := ws.ReadJSON(&msg.Message)
-		if err != nil {
-			log.Fatal("Read Error: ", err)
-		}
-
-		msg.Client = ws
-		msg.RoomID = roomID[0]
-
-		log.Println(msg.Message)
-
-		broadcast <- msg
-	}
+	delete(r.Map, roomID)
 }
