@@ -1,4 +1,4 @@
-.PHONY: all ui backend
+.PHONY: all ui backend run
 
 all: ui backend
 
@@ -7,6 +7,9 @@ ui:
 
 backend:
     cd backend && go build -o main .
+
+run:
+    cd ui && npm start & cd backend && ./main
 
 clean:
     cd ui && rm -rf node_modules && rm -rf build
