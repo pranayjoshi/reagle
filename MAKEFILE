@@ -1,0 +1,13 @@
+.PHONY: all ui backend
+
+all: ui backend
+
+ui:
+    cd ui && npm install && npm run dev
+
+backend:
+    cd backend && go build -o main .
+
+clean:
+    cd ui && rm -rf node_modules && rm -rf build
+    cd backend && rm main
