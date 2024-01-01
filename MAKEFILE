@@ -5,11 +5,18 @@ ui:
 backend:
 	cd backend && go run main.go .
 run:
-	tmux new-session -d -s ui 'cd ui && npm start'
+	tmux new-session -d -s ui 'cd ui && npm run dev'
 	tmux new-session -d -s backend 'cd backend && ./main'
 clean:
 	cd ui && rm -rf node_modules && rm -rf build
 	cd backend && rm main
+docker-ui:
+	docker build -t my-ui ./ui
+docker-backend:
+	docker build -t my-backend ./backend
+run-docker:
+	docker run -d -p 3000:3000 my-ui
+	docker run -d -p 8080:8080 my-backend
 kill:
-	tmux kill-session -t ui
-	tmux kill-session -t backend
+	tmux has-session -t ui 2>/dev/null && tmux kill-session -t ui || true
+	tmux has-session -t backend 2>/dev/null && tmux kill-session -t backend || true
