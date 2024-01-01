@@ -1,16 +1,12 @@
 .PHONY: all ui backend run
-
 all: ui backend
-
 ui:
-    cd ui && npm install && npm run dev
-
+	cd ui && npm install && npm run dev
 backend:
-    cd backend && go build -o main .
-
+	cd backend && go run main.go .
 run:
-    cd ui && npm start & cd backend && ./main
-
+	tmux new-session -d -s ui 'cd ui && npm start'
+	tmux new-session -d -s backend 'cd backend && ./main'
 clean:
-    cd ui && rm -rf node_modules && rm -rf build
-    cd backend && rm main
+	cd ui && rm -rf node_modules && rm -rf build
+	cd backend && rm main
