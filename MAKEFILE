@@ -10,3 +10,6 @@ run:
 clean:
 	cd ui && rm -rf node_modules && rm -rf build
 	cd backend && rm main
+kill:
+	tmux kill-session -t ui
+	tmux kill-session -t backend
